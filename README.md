@@ -6,10 +6,10 @@
 <br />
 <div align="center">
   <a href="https://github.com/nKelidhs/beers-api">
-    ![alt text](https://github.com/nKelidhs/beers-api/beer-log/png?raw=true)
+    ![alt text](https://w7.pngwing.com/pngs/22/572/png-transparent-beer-alcoholic-drink-beer-toast-text-logo-beer.png)
   </a>
 
-<h3 align="center">project_title</h3>
+<h3 align="center">Beers</h3>
 
   <p align="center">
     Beers RESTful API
