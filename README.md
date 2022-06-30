@@ -6,7 +6,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/nKelidhs/beers-api">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    ![alt text](https://github.com/nKelidhs/beers-api/beer-log/png?raw=true)
   </a>
 
 <h3 align="center">project_title</h3>
@@ -85,7 +85,7 @@ In order to run the API, PostgreSQL must be installed in the OS.
    ```bash
    CREATE DATABASE database_name;
    ```
-3. Enter your PostgreSQL Database URL, Username and Password in `resources/application.properties`
+3. Enter your Postgre Database URL, Username and Password in `resources/application.properties`
    ```
    spring.datasource.url=jdbc:postgresql://localhost:PORT/database_name
    spring.datasource.username=username
@@ -99,8 +99,6 @@ In order to run the API, PostgreSQL must be installed in the OS.
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
 Swagger was implemented in the API for testing purposes. For the Swagger please follow the link after you run the project: http://localhost:8080/swagger-ui/#/
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -110,7 +108,7 @@ Swagger was implemented in the API for testing purposes. For the Swagger please 
 <!-- CONTACT -->
 ## Contact
 
-Nikos Kelidis - [linkedin-url] - email@email_client.com
+Nikos Kelidis - [LinkedIn](https://www.linkedin.com/in/nkelidis1)- nkelidhs@gmail.com
 
 Project Link: [https://github.com/nKelidhs/beers-api.git](https://github.com/nKelidhs/beers-api.git)
 
