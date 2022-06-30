@@ -6,7 +6,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/nKelidhs/beers-api">
-    ![alt text](https://w7.pngwing.com/pngs/22/572/png-transparent-beer-alcoholic-drink-beer-toast-text-logo-beer.png)
+    <img src="beer-logo.png" alt="Logo" width="80" height="80">
   </a>
 
 <h3 align="center">Beers</h3>
