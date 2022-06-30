@@ -56,7 +56,7 @@ This project was created as a job assignment.
 ### Built With
 
 * [Java](https://www.java.com/en/)
-* [Spring Framework](https://spring.io/)
+* [Spring Boot](https://spring.io/projects/spring-boot)
 * [Lombok](https://projectlombok.org/)
 * [PostgreSQL](https://www.postgresql.org/)
 
