@@ -11,7 +11,6 @@ import java.util.List;
 
 @org.springframework.context.annotation.Configuration
 public class Configuration {
-
     @Bean
     CommandLineRunner commandLineRunner(BeerRepository repository){
         return args -> {

@@ -8,17 +8,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface BeerRepository extends JpaRepository<Beer, Long> {
 
-    Beer findByName(String name);
-
-    List<Beer> findByRate(int rate);
-
-    List<Beer> findByType(BeerType type);
+    Optional<Beer> findByName(String name);
 
     @Modifying
-    @Query("update Beer b set b.rate = ?1 where b.id = ?2")
-    void setBeerRateById(int rate, Long id);
+    @Query("update Beer b set b.rate = ?2 where b.id = ?1")
+    void setBeerRateById(Long id, int rate);
 }

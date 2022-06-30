@@ -1,6 +1,7 @@
 package com.beersAPI.beers.Service;
 
 import com.beersAPI.beers.Enumerator.BeerType;
+import com.beersAPI.beers.Helper.Request.UpdateRatingRequest;
 import com.beersAPI.beers.Model.Beer;
 import com.beersAPI.beers.Repository.BeerRepository;
 import lombok.RequiredArgsConstructor;
@@ -8,8 +9,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -19,69 +22,104 @@ public class BeerService {
 
     private final BeerRepository beerRepository;
 
-    public List<Beer> getAllBeers(){
-        log.info("Fetching all beers");
-
-        return beerRepository.findAll();
-    }
-
-    public Beer create(Beer beer){
-        log.info("Saving new beer {}", beer.getName());
-        //validation here
-
-        return beerRepository.save(beer);
-    }
-
-    public Beer getById(Long id){
-        log.info("Fetching beer with id {}", id);
-        //validation here
-
-        return beerRepository.findById(id).get();
-
-    }
-
-    public Beer getByName(String name){
-        log.info("Fetching beer {}", name);
-        //validation here
-
-        return beerRepository.findByName(name);
-    }
-
-    public List<Beer> getBeersWithFilters(String name, BeerType type, Integer rate ){
+    public List<Beer> getBeersWithFilters(String name, BeerType type, Integer rate) {
         log.info("Fetching beers with filters");
-        //validation here
-
-        if (name == null && type == null && rate == null){
-            var tt = beerRepository.findAll();
-
-            return tt;
-        }
 
         Beer beer = new Beer();
         beer.setName(name);
         beer.setType(type);
-        if (rate != null){
+        if (rate != null) {
             beer.setRate(rate);
         }
 
         return beerRepository.findAll(Example.of(beer));
     }
 
+    public Beer create(Beer beer) throws IllegalArgumentException {
+        log.info("Saving new beer {}", beer.getName());
+        if (!isNameValid(beer.getName())) throw new IllegalArgumentException("Name cannot be null or empty");
+        if (!isTypeValid(beer.getType())) throw new IllegalArgumentException("Beer Type cannot be null");
+        if (!isRateRangeValid(beer.getRate())) throw new IllegalArgumentException("Rate must be between 1 and 5");
+        if (beerRepository.findByName(beer.getName()).isPresent())
+            throw new IllegalArgumentException(String.format("There is already a beer with the name %s", beer.getName()));
 
-    public Boolean updateRate(Beer beer){
-        log.info("Updating the rate of beer with id {}", beer.getId());
-        //validation here
-
-        beerRepository.setBeerRateById(beer.getRate(), beer.getId());
-        return true;
+        return beerRepository.save(beer);
     }
 
-
-    public Boolean delete(Long id){
+    public Boolean delete(Long id) throws EntityNotFoundException {
         log.info("Deleting beer with id {}", id);
-        //validation here
+        Optional<Beer> beer = beerRepository.findById(id);
+        if (beer.isEmpty()) throw new EntityNotFoundException(String.format("There is no beer with id %s", id));
 
         beerRepository.deleteById(id);
         return true;
     }
+
+    public Boolean updateRate(Long id, UpdateRatingRequest request) throws IllegalArgumentException, EntityNotFoundException {
+        log.info("Updating the rate of beer with id {}", id);
+        if (!isIdValid(id)) throw new IllegalArgumentException("Id cannot be null or 0");
+        if (!isRateValid(request.getRate())) throw new IllegalArgumentException("Rate must be between 1 and 5");
+
+        Optional<Beer> beer = beerRepository.findById(id);
+        if (beer.isEmpty()) throw new EntityNotFoundException(String.format("There is no beer with id %s", id));
+
+
+        beerRepository.setBeerRateById(id, request.getRate());
+        return true;
+    }
+
+    public Beer getById(Long id) throws IllegalArgumentException, EntityNotFoundException {
+        log.info("Fetching beer with id {}", id);
+        if (!isIdValid(id)) throw new IllegalArgumentException("Id parameter cannot be null or 0");
+
+        var beer = beerRepository.findById(id);
+        if (beer.isEmpty()) throw new EntityNotFoundException(String.format("There is no beer with id %s", id));
+
+        return beer.get();
+
+    }
+
+    public Beer getByName(String name) throws IllegalArgumentException, EntityNotFoundException {
+        log.info("Fetching beer {}", name);
+        if (!isNameValid(name)) throw new IllegalArgumentException("Name cannot be null or empty");
+
+        var beer = beerRepository.findByName(name);
+        if (beer.isEmpty()) throw new EntityNotFoundException(String.format("There is no beer with name %s", name));
+
+        return beer.get();
+    }
+
+
+
+
+
+    //region Validations
+    private Boolean isIdValid(Long id) {
+        if (id == null) return false;
+        if (id == 0) return false;
+        return true;
+    }
+
+    private Boolean isRateValid(Integer rate) {
+        if (rate == null) return false;
+        if (!isRateRangeValid(rate)) return false;
+        return true;
+    }
+
+    private Boolean isNameValid(String name) {
+        if (name == null) return false;
+        if (name.isEmpty()) return false;
+        return true;
+    }
+
+    private Boolean isTypeValid(BeerType type) {
+        if (type == null) return false;
+        return true;
+    }
+
+    private Boolean isRateRangeValid(Integer rate) {
+        if (rate < 1 || rate > 5) return false;
+        return true;
+    }
+    //endregion
 }
