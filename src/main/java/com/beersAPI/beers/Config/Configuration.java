@@ -5,12 +5,26 @@ import com.beersAPI.beers.Model.Beer;
 import com.beersAPI.beers.Repository.BeerRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @org.springframework.context.annotation.Configuration
 public class Configuration {
+
+    @Bean
+    public Docket api() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.beersAPI.beers.Controller"))
+                .build();
+    }
+
     @Bean
     CommandLineRunner commandLineRunner(BeerRepository repository){
         return args -> {
