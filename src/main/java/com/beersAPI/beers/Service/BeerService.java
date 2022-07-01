@@ -39,9 +39,9 @@ public class BeerService {
         log.info("Saving new beer {}", beer.getName());
         if (!isNameValid(beer.getName())) throw new IllegalArgumentException("Name cannot be null or empty");
         if (!isTypeValid(beer.getType())) throw new IllegalArgumentException("Beer Type cannot be null");
-        if (!isRateRangeValid(beer.getRate())) throw new IllegalArgumentException("Rate must be between 1 and 5");
+        if (beer.getRate() != null && !isRateRangeValid(beer.getRate())) throw new IllegalArgumentException("Rate must be between 0 and 5");
         if (beerRepository.findByName(beer.getName()).isPresent())
-            throw new IllegalArgumentException(String.format("There is already a beer with the name %s", beer.getName()));
+            throw new IllegalArgumentException("A beer with the same name already exist in the database");
 
         return beerRepository.save(beer);
     }
@@ -49,7 +49,7 @@ public class BeerService {
     public Boolean delete(Long id) throws EntityNotFoundException {
         log.info("Deleting beer with id {}", id);
         Optional<Beer> beer = beerRepository.findById(id);
-        if (beer.isEmpty()) throw new EntityNotFoundException(String.format("There is no beer with id %s", id));
+        if (beer.isEmpty()) throw new EntityNotFoundException(String.format("Beer with id %s not found in the database", id));
 
         beerRepository.deleteById(id);
         return true;
@@ -58,10 +58,10 @@ public class BeerService {
     public Boolean updateRate(Long id, UpdateRatingRequest request) throws IllegalArgumentException, EntityNotFoundException {
         log.info("Updating the rate of beer with id {}", id);
         if (!isIdValid(id)) throw new IllegalArgumentException("Id cannot be null or 0");
-        if (!isRateValid(request.getRate())) throw new IllegalArgumentException("Rate must be between 1 and 5");
+        if (!isRateValid(request.getRate())) throw new IllegalArgumentException("Rate must be between 0 and 5");
 
         Optional<Beer> beer = beerRepository.findById(id);
-        if (beer.isEmpty()) throw new EntityNotFoundException(String.format("There is no beer with id %s", id));
+        if (beer.isEmpty()) throw new EntityNotFoundException(String.format("Beer with id %s not found in the database", id));
 
 
         beerRepository.setBeerRateById(id, request.getRate());
@@ -73,7 +73,7 @@ public class BeerService {
         if (!isIdValid(id)) throw new IllegalArgumentException("Id parameter cannot be null or 0");
 
         var beer = beerRepository.findById(id);
-        if (beer.isEmpty()) throw new EntityNotFoundException(String.format("There is no beer with id %s", id));
+        if (beer.isEmpty()) throw new EntityNotFoundException(String.format("Beer with id %s not found in the database", id));
 
         return beer.get();
 
@@ -84,7 +84,7 @@ public class BeerService {
         if (!isNameValid(name)) throw new IllegalArgumentException("Name cannot be null or empty");
 
         var beer = beerRepository.findByName(name);
-        if (beer.isEmpty()) throw new EntityNotFoundException(String.format("There is no beer with name %s", name));
+        if (beer.isEmpty()) throw new EntityNotFoundException(String.format("Beer with id %s not found in the database", name));
 
         return beer.get();
     }
@@ -113,13 +113,11 @@ public class BeerService {
     }
 
     private Boolean isTypeValid(BeerType type) {
-        if (type == null) return false;
-        return true;
+        return type != null;
     }
 
     private Boolean isRateRangeValid(Integer rate) {
-        if (rate < 1 || rate > 5) return false;
-        return true;
+        return rate >= 0 && rate <= 5;
     }
     //endregion
 }

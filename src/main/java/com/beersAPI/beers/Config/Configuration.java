@@ -1,32 +1,27 @@
 package com.beersAPI.beers.Config;
 
 import com.beersAPI.beers.Enumerator.BeerType;
+import com.beersAPI.beers.Model.AppUser;
 import com.beersAPI.beers.Model.Beer;
 import com.beersAPI.beers.Repository.BeerRepository;
+import com.beersAPI.beers.Service.AppUserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @org.springframework.context.annotation.Configuration
 public class Configuration {
 
     @Bean
-    public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("com.beersAPI.beers.Controller"))
-                .build();
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
-    CommandLineRunner commandLineRunner(BeerRepository repository){
+    CommandLineRunner beerCommandLineRunner(BeerRepository repository) {
         return args -> {
             Beer Bergina = new Beer(
                     1L,
@@ -88,9 +83,15 @@ public class Configuration {
                     BeerType.PILSNER,
                     5);
 
-            repository.saveAll(List.of(Bergina, BerginaPilsner, Mythos, Pils, Amstel, Alfa, Corona, Septem, Fischer, SknipaSalonikia  ));
+            repository.saveAll(List.of(Bergina, BerginaPilsner, Mythos, Pils, Amstel, Alfa, Corona, Septem, Fischer, SknipaSalonikia));
         };
+    }
 
-
+    @Bean
+    CommandLineRunner appUserCommandLineRunner(AppUserService appUserService) {
+        return args -> {
+            appUserService.create(new AppUser(null, "Nikos Kelidis", "nkelidis", "1234"));
+            appUserService.create(new AppUser(null, "Savvas Kelidis", "skelidis", "1234"));
+        };
     }
 }

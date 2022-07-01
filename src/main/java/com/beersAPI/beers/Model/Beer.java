@@ -18,5 +18,5 @@ public class Beer {
     public Long id;
     public String name;
     public BeerType type;
-    public Integer rate;
+    public Integer rate = 0;
 }
