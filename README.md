@@ -48,7 +48,7 @@
 The API handles beers with the basic CRUD operations. It is build with Java using the Spring Boot Framework and uses PostgreSQL Database.
 Lastly, JWT authentication is implemented.
 
-This project was created as a job assignment.
+This API was created as a job assignment.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
