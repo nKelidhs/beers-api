@@ -14,6 +14,8 @@ import org.springframework.context.annotation.Configuration;
         bearerFormat = "JWT",
         scheme = "bearer"
 )
+// Initial CConfiguration for the Swagger UI
+// SecurityScheme is for Authentication.
 public class OpenApi30Config {
 
 }

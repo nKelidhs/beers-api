@@ -26,10 +26,10 @@ import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 @Slf4j
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
-    // Here we define if the user has access to the Application.
     @Override
+    // Here we define if the user has access to the Application.
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        // If the path is the token path, then we don't need to check anything.
+        // If the path is the token, then we don't need to check anything.
         if (request.getServletPath().equals("/api/v1/token")) {
             filterChain.doFilter(request, response);
         } else {
@@ -37,7 +37,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
             String authorizationHeader = request.getHeader(AUTHORIZATION);
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
                 try {
-                    // We get the token and then we verify it. If its correct, then we take username from the name and
+                    // We get the token and then we verify it. If it's correct, then we take username from the name and
                     // set the user on the Security Context.
                     String token = authorizationHeader.substring("Bearer ".length());
                     Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());

@@ -1,8 +1,8 @@
 package com.beersAPI.beers.Controller;
 
 import com.beersAPI.beers.Enumerator.BeerType;
-import com.beersAPI.beers.Helper.Request.UpdateRatingRequest;
-import com.beersAPI.beers.Helper.Response;
+import com.beersAPI.beers.Model.Request.UpdateRatingRequest;
+import com.beersAPI.beers.Model.Response.Response;
 import com.beersAPI.beers.Model.Beer;
 import com.beersAPI.beers.Service.BeerService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,12 +33,13 @@ public class BeerController {
             "If no parameters are provided, it will return all the beers")
     @ApiResponses(value = {
             @ApiResponse(responseCode =  "200", description = "Successfully retrieved"),
-            @ApiResponse(responseCode =  "404", description = "Not found - The product was not found")
+            @ApiResponse(responseCode =  "400", description = "Validations failed")
     })
     @GetMapping("/beers")
     public ResponseEntity<Response> getBeers(@RequestParam(required = false, name = "name") String name,
                                              @RequestParam(required = false, name = "type") BeerType type,
                                              @RequestParam(required = false, name = "rate") Integer rate) {
+        try {
         return ResponseEntity.ok(Response.builder()
                 .timeStamp(now())
                 .data(Map.of("beers", beerService.getBeersWithFilters(name, type, rate)))
@@ -47,9 +48,13 @@ public class BeerController {
                 .statusCode(OK.value())
                 .build()
         );
+        } catch (IllegalArgumentException ex) {
+            throw new ResponseStatusException(BAD_REQUEST, ex.getMessage());
+        }
     }
 
-    @Operation(summary = "Create new beer", description = "Name and Type are required. Also, name must be unique. Returns the new beer inside the data property if successful")
+    @Operation(summary = "Create new beer", description = "Name and Type are required and rate is optional. If no rate is provided then the beer will have 0 rate." +
+            " Also, the beer name is unique. Returns the new beer inside the data property if successful")
     @ApiResponses(value = {
             @ApiResponse(responseCode =  "200", description = "Successfully created"),
             @ApiResponse(responseCode =  "400", description = "Validations failed")
@@ -115,7 +120,7 @@ public class BeerController {
         }
     }
 
-    @Operation(summary = "Retrieves a beer based on the id", description = "The results are inside the data property. Returns a single beer with the provided id.")
+    @Operation(summary = "Retrieves an existing beer based on the id", description = "The results are inside the data property. Returns a single beer with the provided id.")
     @ApiResponses(value = {
             @ApiResponse(responseCode =  "200", description = "Successfully Retrieved"),
             @ApiResponse(responseCode =  "400", description = "Validations failed"),
@@ -139,7 +144,7 @@ public class BeerController {
         }
     }
 
-    @Operation(summary = "Retrieves a beer based on the name", description = "The results are inside the data property. Returns a single beer with the provided id.")
+    @Operation(summary = "Retrieves an existing beer based on it's name", description = "The results are inside the data property. Returns a single beer with the provided name.")
     @ApiResponses(value = {
             @ApiResponse(responseCode =  "200", description = "Successfully Retrieved"),
             @ApiResponse(responseCode =  "400", description = "Validations failed"),

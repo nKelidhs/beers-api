@@ -1,8 +1,11 @@
 package com.beersAPI.beers.Controller;
 
-import com.beersAPI.beers.Helper.Response;
+import com.beersAPI.beers.Model.Response.Response;
 import com.beersAPI.beers.Model.AppUser;
 import com.beersAPI.beers.Service.AppUserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +25,11 @@ public class AppUserController {
 
     private final AppUserService appUserService;
 
+    @Operation(summary = "Create new User")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode =  "200", description = "Successfully retrieved"),
+            @ApiResponse(responseCode =  "400")
+    })
     @PostMapping("/user/create")
     public ResponseEntity<Response> createUser(@RequestBody AppUser appUser) {
         try {
@@ -38,6 +46,11 @@ public class AppUserController {
         }
     }
 
+    @Operation(summary = "Retrieve all the users. The Password is encoded using BCryptPasswordEncoder")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode =  "200", description = "Successfully retrieved"),
+            @ApiResponse(responseCode =  "400")
+    })
     @GetMapping("/users")
     public ResponseEntity<Response> getUsers() {
         try {

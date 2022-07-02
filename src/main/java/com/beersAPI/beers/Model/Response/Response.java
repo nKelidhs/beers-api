@@ -1,4 +1,4 @@
-package com.beersAPI.beers.Helper;
+package com.beersAPI.beers.Model.Response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;

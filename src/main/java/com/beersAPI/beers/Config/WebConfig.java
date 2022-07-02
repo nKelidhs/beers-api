@@ -8,9 +8,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
+    @Override
     // We need this formatter in order to automatically convert BearType to String when we
     // retrieve beers from the database.
-    @Override
     public void addFormatters(FormatterRegistry registry) {
         registry.addConverter(new StringToBeerTypeEnumConverter());
     }

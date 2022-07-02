@@ -20,7 +20,9 @@ public class Configuration {
         return new BCryptPasswordEncoder();
     }
 
+
     @Bean
+        //Populate Beers Table
     CommandLineRunner beerCommandLineRunner(BeerRepository repository) {
         return args -> {
             Beer Bergina = new Beer(
@@ -87,11 +89,10 @@ public class Configuration {
         };
     }
 
+
     @Bean
+        //Populate Users Table
     CommandLineRunner appUserCommandLineRunner(AppUserService appUserService) {
-        return args -> {
-            appUserService.create(new AppUser(null, "Nikos Kelidis", "nkelidis", "1234"));
-            appUserService.create(new AppUser(null, "Savvas Kelidis", "skelidis", "1234"));
-        };
+        return args -> appUserService.create(new AppUser(null, "Nikos Kelidis", "admin", "admin"));
     }
 }

@@ -1,4 +1,4 @@
-package com.beersAPI.beers.Helper.Request;
+package com.beersAPI.beers.Model.Request;
 
 import lombok.Data;
 
