@@ -6,7 +6,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/nKelidhs/beers-api">
-    <img src="beer-logo.jpg" alt="Logo" width="120" height="120">
+    <img src="images/beer.png" alt="Logo" width="220" height="120">
   </a>
 
 <h3 align="center">Beers</h3>
@@ -35,7 +35,7 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
+    <li><a href="#testing">Usage</a></li>
     <li><a href="#contact">Contact</a></li>
   </ol>
 </details>
@@ -45,7 +45,8 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-The API handles beers with the basic CRUD operations. It is build with Java using the Spring Framework. The database that is PostgreSQL.
+The API handles beers with the basic CRUD operations. It is build with Java using the Spring Boot Framework and uses PostgreSQL Database.
+Lastly, JWT authentication is implemented.
 
 This project was created as a job assignment.
 
@@ -58,6 +59,8 @@ This project was created as a job assignment.
 * [Java](https://www.java.com/en/)
 * [Spring Boot](https://spring.io/projects/spring-boot)
 * [Lombok](https://projectlombok.org/)
+* [JWT](https://jwt.io/)
+* [Swagger-ui](https://springdoc.org/)
 * [PostgreSQL](https://www.postgresql.org/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -67,7 +70,7 @@ This project was created as a job assignment.
 <!-- GETTING STARTED -->
 ## Getting Started
 
-To get a local copy up and running follow these simple example steps.
+To get a local copy up and running follow these simple steps.
 
 ### Prerequisites
 
@@ -81,7 +84,7 @@ In order to run the API, PostgreSQL must be installed in the OS.
    ```sh
    git clone https://github.com/nKelidhs/beers-api.git
    ```
-2. Create the Postgre Database
+2. Create the Database through bash or pgAdmin
    ```bash
    CREATE DATABASE database_name;
    ```
@@ -95,17 +98,21 @@ In order to run the API, PostgreSQL must be installed in the OS.
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
+## Testing
 
-<!-- USAGE EXAMPLES -->
-## Usage
+Swagger was implemented in the API for testing purposes. For the Swagger please follow the link after you run the project: [Swagger UI](http://localhost:8080/swagger-ui/index.html#/) 
 
-Swagger was implemented in the API for testing purposes. For the Swagger please follow the link after you run the project: http://localhost:8080/swagger-ui/#/
+The API has JWT Authentication so before trying any request, a token must be generated using the default Username and Password (admin, admin).
+To generate the token please follow this link: [Generate Token](http://localhost:8080/api/v1/token?username=admin&password=admin)
+
+After that, the token must be provided to the Swagger UI using the following button:
+
+<img src="images/swaggerAuthorize.png" alt="Logo">
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
 
-<!-- CONTACT -->
 ## Contact
 
 Nikos Kelidis - [LinkedIn](https://www.linkedin.com/in/nkelidis1)- nkelidhs@gmail.com
@@ -121,4 +128,3 @@ Project Link: [https://github.com/nKelidhs/beers-api.git](https://github.com/nKe
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/nkelidis1
-[product-screenshot]: beer-logo.png
